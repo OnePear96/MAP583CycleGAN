@@ -34,7 +34,7 @@ def Discriminator():
 
 
 
-
+'''
 
 class discriminator(tf.keras.Model):
     def __init__(self):
@@ -68,3 +68,4 @@ class discriminator(tf.keras.Model):
 
         return x
 
+'''

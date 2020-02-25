@@ -59,7 +59,7 @@ def Generator():
 
 
 
-
+'''
 
 class generator(tf.keras.Model):
     def __init__(self):
@@ -106,4 +106,4 @@ class generator(tf.keras.Model):
         return x
 
 
-
+'''
