@@ -1,5 +1,5 @@
 import tensorflow as tf
-from blocks import upsample,downsample
+from .blocks import upsample,downsample
 
 OUTPUT_CHANNELS = 3
 
