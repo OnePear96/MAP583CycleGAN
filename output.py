@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+import matplotlib as plt
 import os
 from basic_models.generator import Generator
 
@@ -39,5 +40,5 @@ for i in range(5):
         # getting the pixel values between [0, 1] to plot it.
         plt.imshow(display_list[j] * 0.5 + 0.5)
         plt.axis('off')
-plt.show()
+plt.savefig('output.png',)
 
