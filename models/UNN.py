@@ -29,3 +29,8 @@ def train_step(input_image, target, epoch):
 
   with summary_writer.as_default():
     tf.summary.scalar('gen_loss', gen_loss, step=epoch)
+
+checkpoint_dir = './UNN_training_checkpoints'
+checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
+checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
+                                 generator=generator)

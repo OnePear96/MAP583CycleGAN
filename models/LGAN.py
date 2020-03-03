@@ -41,3 +41,12 @@ def train_step(input_image, target, epoch):
     tf.summary.scalar('gen_gan_loss', gen_gan_loss, step=epoch)
     tf.summary.scalar('gen_l1_loss', gen_l1_loss, step=epoch)
     tf.summary.scalar('disc_loss', disc_loss, step=epoch)
+
+
+
+checkpoint_dir = './LGAN_training_checkpoints'
+checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
+checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
+                                 discriminator_optimizer=discriminator_optimizer,
+                                 generator=generator,
+                                 discriminator=discriminator)

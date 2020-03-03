@@ -57,3 +57,13 @@ def train_step(X, Y, epoch):
     with summary_writer.as_default():
         tf.summary.scalar('gen_total_loss',gen_total_loss, step = epoch)
         tf.summary.scalar('disc_total_loss',D_loss, step=epoch)
+
+
+checkpoint_dir = './LCycleGAN_training_checkpoints'
+checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
+checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
+                                 discriminator_optimizer = discriminator_optimizer,
+                                 generator_X2Y=generator_X2Y,
+                                 generator_Y2X=generator_Y2X,
+                                 discriminator_X=discriminator_X,
+                                 discriminator_Y=discriminator_Y)
