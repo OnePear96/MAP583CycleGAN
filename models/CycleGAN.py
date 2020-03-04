@@ -1,7 +1,8 @@
 import datetime
 import tensorflow as tf
 from tools.losses import Cycle_generator_loss as generator_loss, discriminator_loss
-from basic_models.generator import Generator, simple_Discriminator as Discriminator
+from basic_models.generator import Generator
+from basic_models.discriminator import simple_Discriminator as Discriminator
 
 
 class CycleGAN():

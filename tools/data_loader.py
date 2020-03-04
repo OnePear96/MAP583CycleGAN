@@ -23,7 +23,7 @@ def normalize(image):
 
 
 class load_image_s():
-    def __init__(self,path = 'data/MapAerialSup/', buffer = 400, batch = 1):
+    def __init__(self,path = './data/MapAerialSup/', buffer = 400, batch = 1):
         super().__init__()
         self.BUFFER_SIZE = buffer
         self.BATCH_SIZE = batch
@@ -61,7 +61,7 @@ class load_image_s():
 
     def load_image_train(self,image_file):
         input_image, real_image = self.load(image_file)
-        input_image, real_image = random_jitter(input_image, real_image)
+        input_image, real_image = self.random_jitter(input_image, real_image)
         input_image = normalize(input_image)
         real_image = normalize(real_image)
         return input_image, real_image
@@ -69,15 +69,15 @@ class load_image_s():
 
     def load_image_test(self,image_file):
         input_image, real_image = self.load(image_file)
-        input_image = resize(input_image, IMG_HEIGHT, IMG_WIDTH)
-        real_image = resize(real_image, IMG_HEIGHT, IMG_WIDTH)
+        input_image = resize(input_image, self.IMG_HEIGHT, self.IMG_WIDTH)
+        real_image = resize(real_image, self.IMG_HEIGHT, self.IMG_WIDTH)
         input_image = normalize(input_image)
         real_image = normalize(real_image)
         return input_image, real_image
 
     def get_train_set(self):
-        train_dataset = tf.data.Dataset.list_files(PATH+'train/*.jpg')
-        train_dataset = train_dataset.map(load_image_train,
+        train_dataset = tf.data.Dataset.list_files(self.PATH+'train/*.jpg')
+        train_dataset = train_dataset.map(self.load_image_train,
                                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
         train_dataset = train_dataset.shuffle(BUFFER_SIZE)
         train_dataset = train_dataset.batch(BATCH_SIZE)
@@ -85,15 +85,15 @@ class load_image_s():
         return train_dataset
 
     def get_test_set(self):
-        test_dataset = tf.data.Dataset.list_files(PATH+'val/*.jpg')
-        test_dataset = test_dataset.map(load_image_test)
+        test_dataset = tf.data.Dataset.list_files(self.PATH+'val/*.jpg')
+        test_dataset = test_dataset.map(self.load_image_test)
         test_dataset = test_dataset.batch(BATCH_SIZE)
         self.test_dataset = test_dataset
         return test_dataset
 
 
 class load_image_u():
-    def __init__(self,path = 'data/MapAerialSup/', buffer = 400, batch = 1, name_X = 'A', name_Y = 'B'):
+    def __init__(self,path = './data/MapAerialSup/', buffer = 400, batch = 1, name_X = 'A', name_Y = 'B'):
         super().__init__()
         self.BUFFER_SIZE = buffer
         self.BATCH_SIZE = batch
@@ -112,54 +112,54 @@ class load_image_u():
     @tf.function()
     def random_jitter(self,input_image):
         # resizing to 64 x 64 x 3
-        input_image = resize(input_image, IMG_HEIGHT, IMG_WIDTH)
+        input_image = resize(input_image, self.IMG_HEIGHT, self.IMG_WIDTH)
         if tf.random.uniform(()) > 0.5:
             # random mirroring
             input_image = tf.image.flip_left_right(input_image)
         return input_image
     
     def load_image_train(self,image_file):
-        input_image = load(image_file)
+        input_image = self.load(image_file)
         input_image = random_jitter(input_image)
         input_image = normalize(input_image)
         return input_image
     
     def load_image_test(self,image_file):
-        input_image = load(image_file)
-        input_image = resize(input_image, IMG_HEIGHT, IMG_WIDTH)
+        input_image = self.load(image_file)
+        input_image = resize(input_image, self.IMG_HEIGHT, self.IMG_WIDTH)
         input_image = normalize(input_image)
         return input_image
 
     def get_train_set(self):
-        path_train_X = PATH + 'train'+name_X
+        path_train_X = PATH + 'train'+self.name_X
         train_dataset_X = tf.data.Dataset.list_files(path_train_X+'/*.jpg')
-        train_dataset_X = train_dataset_X.map(load_image_train,
+        train_dataset_X = train_dataset_X.map(self.load_image_train,
                                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
-        train_dataset_X = train_dataset_X.shuffle(BUFFER_SIZE)
-        train_dataset_X = train_dataset_X.batch(BATCH_SIZE)
+        train_dataset_X = train_dataset_X.shuffle(self.BUFFER_SIZE)
+        train_dataset_X = train_dataset_X.batch(self.BATCH_SIZE)
         self.train_dataset_X = train_dataset_X
 
-        path_train_Y = PATH + 'train'+name_Y
+        path_train_Y = PATH + 'train'+self.name_Y
         train_dataset_Y = tf.data.Dataset.list_files(path_train_Y+'/*.jpg')
-        train_dataset_Y = train_dataset_Y.map(load_image_train,
+        train_dataset_Y = train_dataset_Y.map(self.load_image_train,
                                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
-        train_dataset_Y = train_dataset_Y.shuffle(BUFFER_SIZE)
-        train_dataset_Y = train_dataset_Y.batch(BATCH_SIZE)
+        train_dataset_Y = train_dataset_Y.shuffle(self.BUFFER_SIZE)
+        train_dataset_Y = train_dataset_Y.batch(self.BATCH_SIZE)
         self.train_dataset_Y = train_dataset_Y
 
         return train_dataset_X, train_dataset_Y
 
     def get_test_set(self):
-        path_test_X = PATH + 'test' + name_X
+        path_test_X = PATH + 'test' + self.name_X
         test_dataset_X = tf.data.Dataset.list_files(path_test_X+'/*.jpg')
         test_dataset_X = test_dataset_X.map(load_image_test)
-        test_dataset_X = test_dataset_X.batch(BATCH_SIZE)
+        test_dataset_X = test_dataset_X.batch(self.BATCH_SIZE)
         self.test_dataset_X = test_dataset_X
 
         path_test_Y = PATH + 'test' + name_Y
         test_dataset_Y = tf.data.Dataset.list_files(path_test_Y+'/*.jpg')
-        test_dataset_Y = test_dataset_Y.map(load_image_test)
-        test_dataset_Y = test_dataset_Y.batch(BATCH_SIZE)
+        test_dataset_Y = test_dataset_Y.map(self.load_image_test)
+        test_dataset_Y = test_dataset_Y.batch(self.BATCH_SIZE)
         self.test_dataset_Y = test_dataset_Y
 
         return test_dataset_X,test_dataset_Y

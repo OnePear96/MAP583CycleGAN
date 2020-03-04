@@ -3,8 +3,12 @@ from models.GAN import GAN
 from models.LGAN import LGAN
 from models.LCycleGAN import LCycleGAN
 from models.UNN import UNN
+from tools.data_loader import load_image_s,load_image_u
+from tools.output import generate_multi_images
+import time
 
 Model = 'UNN'
+EPOCHS = 50
 
 def get_trainer(model_type):
     if (model_type == 'GAN'):
@@ -20,7 +24,7 @@ def get_trainer(model_type):
     return None
 
 
-def fit(train_ds, epochs, test_ds, model_type):
+def fit(train_ds, test_ds, epochs, model_type):
   for epoch in range(epochs):
     start = time.time()
     
@@ -31,8 +35,10 @@ def fit(train_ds, epochs, test_ds, model_type):
       generate_images(generator, example_input, example_target)
     print("Epoch: ", epoch)
     '''
+    
+    Trainer, is_cycle = get_trainer(model_type)
 
-    Trainer, is_cycle = get_trainer(Model)
+    generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
 
     # Train
     for n, (input_image, target) in train_ds.enumerate():
@@ -49,3 +55,10 @@ def fit(train_ds, epochs, test_ds, model_type):
     print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
                                                         time.time()-start))
   Trainer.checkpoint.save(file_prefix = Trainer.checkpoint_prefix)
+
+
+if __name__ == "__main__":
+    dataloader = load_image_s()
+    train_dataset = dataloader.get_train_set()
+    test_dataset = dataloader.get_test_set()
+    fit(train_dataset, test_dataset, EPOCHS, Model)

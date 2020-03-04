@@ -1,7 +1,8 @@
 import datetime
 import tensorflow as tf
 from tools.losses import GAN_generator_loss as generator_loss, discriminator_loss
-from basic_models.generator import Generator, simple_Discriminator as Discriminator
+from basic_models.generator import Generator
+from basic_models.discriminator import  simple_Discriminator as Discriminator
 
 
 class GAN():

@@ -1,7 +1,8 @@
 import datetime
 import tensorflow as tf
 from tools.losses import LCycle_generator_loss as generator_loss, discriminator_loss
-from basic_models.generator import Generator, Discriminator as Discriminator
+from basic_models.generator import Generator
+from basic_models.discriminator import  Discriminator as Discriminator
 
 generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
 discriminator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
