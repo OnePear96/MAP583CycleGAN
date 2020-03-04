@@ -120,7 +120,7 @@ class load_image_u():
     
     def load_image_train(self,image_file):
         input_image = self.load(image_file)
-        input_image = random_jitter(input_image)
+        input_image = self.random_jitter(input_image)
         input_image = normalize(input_image)
         return input_image
     
@@ -152,11 +152,11 @@ class load_image_u():
     def get_test_set(self):
         path_test_X = PATH + 'test' + self.name_X
         test_dataset_X = tf.data.Dataset.list_files(path_test_X+'/*.jpg')
-        test_dataset_X = test_dataset_X.map(load_image_test)
+        test_dataset_X = test_dataset_X.map(self.load_image_test)
         test_dataset_X = test_dataset_X.batch(self.BATCH_SIZE)
         self.test_dataset_X = test_dataset_X
 
-        path_test_Y = PATH + 'test' + name_Y
+        path_test_Y = PATH + 'test' + self.name_Y
         test_dataset_Y = tf.data.Dataset.list_files(path_test_Y+'/*.jpg')
         test_dataset_Y = test_dataset_Y.map(self.load_image_test)
         test_dataset_Y = test_dataset_Y.batch(self.BATCH_SIZE)

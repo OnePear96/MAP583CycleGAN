@@ -3,6 +3,7 @@ import tensorflow as tf
 from tools.losses import LGAN_generator_loss as generator_loss, discriminator_loss
 from basic_models.generator import Generator
 from basic_models.discriminator import  Discriminator as Discriminator
+import os
 
 class LGAN():
   def __init__(self):

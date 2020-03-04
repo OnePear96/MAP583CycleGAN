@@ -12,15 +12,15 @@ EPOCHS = 50
 
 def get_trainer(model_type):
     if (model_type == 'GAN'):
-        return GAN, False
+        return GAN(), False
     if (model_type == 'LGAN'):
-        return LGAN, False
+        return LGAN(), False
     if (model_type == 'UNN'):
-        return UNN, False
+        return UNN(), False
     if (model_type == 'CycleGAN'):
-        return CycleGAN, True
+        return CycleGAN(), True
     if (model_type == 'LCycleGAN'):
-        return LCycleGAN, True
+        return LCycleGAN(), True
     return None
 
 

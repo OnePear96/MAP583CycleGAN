@@ -3,7 +3,7 @@ import tensorflow as tf
 from tools.losses import GAN_generator_loss as generator_loss, discriminator_loss
 from basic_models.generator import Generator
 from basic_models.discriminator import  simple_Discriminator as Discriminator
-
+import os
 
 class GAN():
   def __init__(self):
