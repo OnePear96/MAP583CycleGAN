@@ -6,6 +6,7 @@ from models.UNN import UNN
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
 import time
+import os
 
 Model = 'UNN'
 EPOCHS = 50
@@ -48,6 +49,9 @@ def fit(train_ds, test_ds, epochs, model_type):
       Trainer.train_step(input_image, target, epoch)
     print()
 
+    if not os.path.exists(Trainer.checkpoint_prefix):
+      os.makedirs(Trainer.checkpoint_prefix)
+    
     # saving (checkpoint) the model every 20 epochs
     if (epoch + 1) % 20 == 0:
       Trainer.checkpoint.save(file_prefix = Trainer.checkpoint_prefix)
