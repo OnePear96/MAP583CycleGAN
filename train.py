@@ -8,25 +8,25 @@ from tools.output import generate_multi_images
 import time
 import os
 
-Model = 'Unet'
-EPOCHS = 50
+model_name = 'unet'
+epoch = 50
 
-def get_trainer(args):
-    if (args.model_name == 'gan'):
+def get_trainer(model_name):
+    if (model_name == 'gan'):
         return GAN(), False
-    if (args.model_name == 'lgan'):
+    if (model_name == 'lgan'):
         return LGAN(), False
-    if (args.model_name == 'unn'):
-        return UNN(), False
-    if (args.model_name == 'cyclegan'):
+    if (model_name == 'unet'):
+        return Unet(), False
+    if (model_name == 'cyclegan'):
         return CycleGAN(), True
-    if (args.model_name == 'lcyclegan'):
+    if (model_name == 'lcyclegan'):
         return LCycleGAN(), True
     return None
 
 
-def fit(train_ds, test_ds, args):
-  for epoch in range(args.epochs):
+def fit(train_ds, test_ds,epochs):
+  for epoch in range(epochs):
     start = time.time()
 
     '''
@@ -37,7 +37,7 @@ def fit(train_ds, test_ds, args):
     print("Epoch: ", epoch)
     '''
     
-    Trainer, is_cycle = get_trainer(args.model_name)
+    Trainer, is_cycle = get_trainer(model_name)
 
     generate_multi_images(Trainer, test_ds,6,epoch)
 
@@ -65,4 +65,4 @@ if __name__ == "__main__":
     dataloader = load_image_s()
     train_dataset = dataloader.get_train_set()
     test_dataset = dataloader.get_test_set()
-    fit(train_dataset, test_dataset, args)
+    fit(train_dataset, test_dataset, epoch)
