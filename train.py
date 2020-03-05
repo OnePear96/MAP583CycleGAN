@@ -2,12 +2,13 @@ from models.CycleGAN import CycleGAN
 from models.GAN import GAN
 from models.LGAN import LGAN
 from models.LCycleGAN import LCycleGAN
-from models.UNN import UNN
+from models.Unet import Unet
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
 import time
+import os
 
-Model = 'UNN'
+Model = 'Unet'
 EPOCHS = 50
 
 def get_trainer(args):
@@ -27,7 +28,7 @@ def get_trainer(args):
 def fit(train_ds, test_ds, args):
   for epoch in range(args.epochs):
     start = time.time()
-    
+
     '''
     display.clear_output(wait=True)
 
@@ -38,7 +39,7 @@ def fit(train_ds, test_ds, args):
     
     Trainer, is_cycle = get_trainer(args.model_name)
 
-    generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
+    generate_multi_images(Trainer, test_ds,6,epoch)
 
     # Train
     for n, (input_image, target) in train_ds.enumerate():
@@ -47,6 +48,9 @@ def fit(train_ds, test_ds, args):
         print()
       Trainer.train_step(input_image, target, epoch)
     print()
+
+    if not os.path.exists(Trainer.checkpoint_prefix):
+      os.makedirs(Trainer.checkpoint_prefix)
 
     # saving (checkpoint) the model every 20 epochs
     if (epoch + 1) % 20 == 0:

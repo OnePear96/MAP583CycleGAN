@@ -4,10 +4,10 @@ from tools.losses import L_generator_loss as generator_loss
 from basic_models.generator import Generator
 import os
 
-class UNN():
+class Unet():
   
   def __init__(self):
-    super(UNN,self).__init__()
+    super(Unet,self).__init__()
     self.generator = Generator()
     self.generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
     log_dir="logs/"
@@ -19,8 +19,9 @@ class UNN():
     self.checkpoint = tf.train.Checkpoint(generator_optimizer=self.generator_optimizer,
                                     generator=self.generator)
 
-  def get_generator(self):
-    return self.generator
+
+  def __str__(self):
+    return "Unet"
 
   @tf.function
   def train_step(self, input_image, target, epoch):
