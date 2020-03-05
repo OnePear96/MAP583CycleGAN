@@ -28,7 +28,7 @@ def get_trainer(model_type):
 def fit(train_ds, test_ds, epochs, model_type):
   for epoch in range(epochs):
     start = time.time()
-    
+
     '''
     display.clear_output(wait=True)
 
@@ -36,10 +36,10 @@ def fit(train_ds, test_ds, epochs, model_type):
       generate_images(generator, example_input, example_target)
     print("Epoch: ", epoch)
     '''
-    
+
     Trainer, is_cycle = get_trainer(model_type)
 
-  #  generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
+    generate_multi_images(Trainer, test_ds,6,'UNN')
 
     # Train
     for n, (input_image, target) in train_ds.enumerate():
@@ -51,7 +51,7 @@ def fit(train_ds, test_ds, epochs, model_type):
 
     if not os.path.exists(Trainer.checkpoint_prefix):
       os.makedirs(Trainer.checkpoint_prefix)
-    
+
     # saving (checkpoint) the model every 20 epochs
     if (epoch + 1) % 20 == 0:
       Trainer.checkpoint.save(file_prefix = Trainer.checkpoint_prefix)
