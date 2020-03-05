@@ -40,12 +40,12 @@ class GAN():
       discriminator_gradients = disc_tape.gradient(disc_loss,
                                                   self.discriminator.trainable_variables)
 
-      generator_optimizer.apply_gradients(zip(generator_gradients,
+      self.generator_optimizer.apply_gradients(zip(generator_gradients,
                                               self.generator.trainable_variables))
-      discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
+      self.discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
                                                   self.discriminator.trainable_variables))
 
-      with summary_writer.as_default():
+      with self.summary_writer.as_default():
           tf.summary.scalar('gen_total_loss', gen_total_loss, step=epoch)
           tf.summary.scalar('disc_loss', disc_loss, step=epoch)
 

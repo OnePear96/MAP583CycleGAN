@@ -2,7 +2,7 @@ from models.CycleGAN import CycleGAN
 from models.GAN import GAN
 from models.LGAN import LGAN
 from models.LCycleGAN import LCycleGAN
-from models.UNN import Unet
+from models.Unet import Unet
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
 import time
