@@ -4,7 +4,7 @@ from tools.losses import L_generator_loss as generator_loss
 from basic_models.generator import Generator
 import os
 
-class Unet():
+class Unet(tf.keras.Model):
   
   def __init__(self):
     super(Unet,self).__init__()

@@ -26,18 +26,9 @@ def get_trainer(model_name):
 
 
 def fit(train_ds, test_ds,epochs):
+  Trainer, is_cycle = get_trainer(model_name)
   for epoch in range(epochs):
     start = time.time()
-
-    '''
-    display.clear_output(wait=True)
-
-    for example_input, example_target in test_ds.take(1):
-      generate_images(generator, example_input, example_target)
-    print("Epoch: ", epoch)
-    '''
-    
-    Trainer, is_cycle = get_trainer(model_name)
 
     generate_multi_images(Trainer, test_ds,6,epoch)
 
