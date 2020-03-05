@@ -2,13 +2,13 @@ from models.CycleGAN import CycleGAN
 from models.GAN import GAN
 from models.LGAN import LGAN
 from models.LCycleGAN import LCycleGAN
-from models.UNN import UNN
+from models.UNN import Unet
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
 import time
 import os
 
-Model = 'GAN'
+Model = 'Unet'
 EPOCHS = 50
 
 def get_trainer(model_type):
@@ -16,8 +16,8 @@ def get_trainer(model_type):
         return GAN(), False
     if (model_type == 'LGAN'):
         return LGAN(), False
-    if (model_type == 'UNN'):
-        return UNN(), False
+    if (model_type == 'Unet'):
+        return Unet(), False
     if (model_type == 'CycleGAN'):
         return CycleGAN(), True
     if (model_type == 'LCycleGAN'):
