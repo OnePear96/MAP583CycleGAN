@@ -10,22 +10,22 @@ import time
 Model = 'UNN'
 EPOCHS = 50
 
-def get_trainer(model_type):
-    if (model_type == 'GAN'):
+def get_trainer(args):
+    if (args.model_name == 'gan'):
         return GAN(), False
-    if (model_type == 'LGAN'):
+    if (args.model_name == 'lgan'):
         return LGAN(), False
-    if (model_type == 'UNN'):
+    if (args.model_name == 'unn'):
         return UNN(), False
-    if (model_type == 'CycleGAN'):
+    if (args.model_name == 'cyclegan'):
         return CycleGAN(), True
-    if (model_type == 'LCycleGAN'):
+    if (args.model_name == 'lcyclegan'):
         return LCycleGAN(), True
     return None
 
 
-def fit(train_ds, test_ds, epochs, model_type):
-  for epoch in range(epochs):
+def fit(train_ds, test_ds, args):
+  for epoch in range(args.epochs):
     start = time.time()
     
     '''
@@ -36,7 +36,7 @@ def fit(train_ds, test_ds, epochs, model_type):
     print("Epoch: ", epoch)
     '''
     
-    Trainer, is_cycle = get_trainer(model_type)
+    Trainer, is_cycle = get_trainer(args.model_name)
 
     generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
 
@@ -61,4 +61,4 @@ if __name__ == "__main__":
     dataloader = load_image_s()
     train_dataset = dataloader.get_train_set()
     test_dataset = dataloader.get_test_set()
-    fit(train_dataset, test_dataset, EPOCHS, Model)
+    fit(train_dataset, test_dataset, args)
