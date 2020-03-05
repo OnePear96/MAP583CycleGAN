@@ -7,7 +7,7 @@ from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
 import time
 
-Model = 'UNN'
+Model = 'GAN'
 EPOCHS = 50
 
 def get_trainer(model_type):
@@ -38,7 +38,7 @@ def fit(train_ds, test_ds, epochs, model_type):
     
     Trainer, is_cycle = get_trainer(model_type)
 
-    generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
+  #  generate_multi_images(Trainer.get_generator(), test_ds,6,'UNN')
 
     # Train
     for n, (input_image, target) in train_ds.enumerate():

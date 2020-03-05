@@ -22,6 +22,9 @@ class UNN():
   def get_generator(self):
     return self.generator
 
+  def __str__(self):
+    return "Unet"
+
   @tf.function
   def train_step(self, input_image, target, epoch):
     generator, generator_optimizer = self.generator, self.generator_optimizer

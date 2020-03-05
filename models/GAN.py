@@ -19,31 +19,31 @@ class GAN():
 
     checkpoint_dir = './GAN_training_checkpoints'
     self.checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
-    self.checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
-                                    discriminator_optimizer=discriminator_optimizer,
-                                    generator=generator,
-                                    discriminator=discriminator)
+    self.checkpoint = tf.train.Checkpoint(generator_optimizer=self.generator_optimizer,
+                                    discriminator_optimizer=self.discriminator_optimizer,
+                                    generator=self.generator,
+                                    discriminator=self.discriminator)
 
   @tf.function
   def train_step(self, input_image, target, epoch):
       with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-          gen_output = generator(input_image, training=True)
+          gen_output = self.generator(input_image, training=True)
 
-          disc_real_output = discriminator(target, training=True)
-          disc_generated_output = discriminator(gen_output, training=True)
+          disc_real_output = self.discriminator(target, training=True)
+          disc_generated_output = self.discriminator(gen_output, training=True)
 
           gen_total_loss = generator_loss(disc_generated_output, gen_output)
           disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
       generator_gradients = gen_tape.gradient(gen_total_loss,
-                                              generator.trainable_variables)
+                                              self.generator.trainable_variables)
       discriminator_gradients = disc_tape.gradient(disc_loss,
-                                                  discriminator.trainable_variables)
+                                                  self.discriminator.trainable_variables)
 
       generator_optimizer.apply_gradients(zip(generator_gradients,
-                                              generator.trainable_variables))
+                                              self.generator.trainable_variables))
       discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
-                                                  discriminator.trainable_variables))
+                                                  self.discriminator.trainable_variables))
 
       with summary_writer.as_default():
           tf.summary.scalar('gen_total_loss', gen_total_loss, step=epoch)
