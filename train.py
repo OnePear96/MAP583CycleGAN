@@ -5,6 +5,7 @@ from models.LCycleGAN import LCycleGAN
 from models.Unet import Unet
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
+import tensorflow as tf
 import time
 import os
 
@@ -53,6 +54,7 @@ def fit(train_ds, test_ds,epochs):
 
 
 if __name__ == "__main__":
+
     dataloader = load_image_s()
     train_dataset = dataloader.get_train_set()
     test_dataset = dataloader.get_test_set()

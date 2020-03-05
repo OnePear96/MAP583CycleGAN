@@ -1,4 +1,5 @@
 import tensorflow as tf 
+import numpy as np
 
 BUFFER_SIZE = 400
 BATCH_SIZE = 1
@@ -52,7 +53,7 @@ class load_image_s():
         real_image = resize(real_image, 286, 286)
         # randomly cropping to 256 x 256 x 3
         input_image, real_image = random_crop(input_image, real_image)
-        if tf.random.uniform(()) > 0.5:
+        if np.random.rand() > 0.5:
             # random mirroring
             input_image = tf.image.flip_left_right(input_image)
             real_image = tf.image.flip_left_right(real_image)
@@ -113,7 +114,7 @@ class load_image_u():
     def random_jitter(self,input_image):
         # resizing to 64 x 64 x 3
         input_image = resize(input_image, self.IMG_HEIGHT, self.IMG_WIDTH)
-        if tf.random.uniform(()) > 0.5:
+        if np.random.rand() > 0.5:
             # random mirroring
             input_image = tf.image.flip_left_right(input_image)
         return input_image
