@@ -25,16 +25,16 @@ class Unet():
 
   @tf.function
   def train_step(self, input_image, target, epoch):
-    generator, generator_optimizer = self.generator, self.generator_optimizer
+  #  generator, generator_optimizer = self.generator, self.generator_optimizer
     with tf.GradientTape() as gen_tape:
-      gen_output = generator(input_image, training=True)
+      gen_output = self.generator(input_image, training=True)
       gen_loss = generator_loss(gen_output, target)
 
     generator_gradients = gen_tape.gradient(gen_loss,
-                                            generator.trainable_variables)
+                                            self.generator.trainable_variables)
 
-    generator_optimizer.apply_gradients(zip(generator_gradients,
-                                            generator.trainable_variables))
+    self.generator_optimizer.apply_gradients(zip(generator_gradients,
+                                            self.generator.trainable_variables))
 
 
     with self.summary_writer.as_default():
