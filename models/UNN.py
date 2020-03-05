@@ -4,10 +4,10 @@ from tools.losses import L_generator_loss as generator_loss
 from basic_models.generator import Generator
 import os
 
-class UNN():
+class Unet():
   
   def __init__(self):
-    super(UNN,self).__init__()
+    super(Unet,self).__init__()
     self.generator = Generator()
     self.generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
     log_dir="logs/"
