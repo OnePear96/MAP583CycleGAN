@@ -39,7 +39,7 @@ def fit(train_ds, test_ds, epochs, model_type):
 
     Trainer, is_cycle = get_trainer(model_type)
 
-    generate_multi_images(Trainer, test_ds,6,'UNN')
+    generate_multi_images(Trainer, test_ds,6,epoch)
 
     # Train
     for n, (input_image, target) in train_ds.enumerate():

@@ -30,6 +30,9 @@ class LCycleGAN():
                                         discriminator_X=self.discriminator_X,
                                         discriminator_Y=self.discriminator_Y)
 
+    def __str__(self):
+        return 'LCycleGAN'
+
     @tf.function
     def train_step(self, X, Y, epoch):
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:

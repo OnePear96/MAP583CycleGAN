@@ -24,6 +24,9 @@ class GAN():
                                     generator=self.generator,
                                     discriminator=self.discriminator)
 
+  def __str__(self):
+    return "GAN"
+
   @tf.function
   def train_step(self, input_image, target, epoch):
       with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:

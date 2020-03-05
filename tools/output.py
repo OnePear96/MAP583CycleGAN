@@ -17,7 +17,7 @@ def generate_images(model, test_input, tar,name):
     return 
 
 def generate_multi_images(model, dataset,N,name):
-    generator = model.get_generator()
+    generator = model.generator
     fig,ax = plt.subplots(N,3,figsize=(15,15*N/2.2))
     for j, (Input, Target) in enumerate(dataset.take(N)):
         prediction = generator(Input, training=True)
@@ -27,9 +27,9 @@ def generate_multi_images(model, dataset,N,name):
             ax[j][i].set_title(title[i])
             ax[j][i].imshow(display_list[i] * 0.5 + 0.5)
     path = PATH_output + str(model)
-    print(str(model))
+#    print(str(model))
     if not os.path.exists(path):
         os.makedirs(path)
-    plt.savefig(path + '/' + name + '.png')
-    plt.show()
+    plt.savefig(path + '/' + str(name) + '.png')
+#    plt.show()
     return 

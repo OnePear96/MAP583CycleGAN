@@ -19,8 +19,6 @@ class Unet():
     self.checkpoint = tf.train.Checkpoint(generator_optimizer=self.generator_optimizer,
                                     generator=self.generator)
 
-  def get_generator(self):
-    return self.generator
 
   def __str__(self):
     return "Unet"
