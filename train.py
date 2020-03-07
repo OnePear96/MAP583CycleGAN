@@ -9,7 +9,7 @@ import tensorflow as tf
 import time
 import os
 
-model_name = 'unet'
+model_name = 'gan'
 epoch = 50
 
 def get_trainer(model_name):
@@ -32,7 +32,7 @@ def fit(train_ds, test_ds,epochs):
     start = time.time()
 
     generate_multi_images(Trainer, test_ds,6,epoch)
-
+    print("Epoch: ", epoch)
     # Train
     for n, (input_image, target) in enumerate(train_ds):
       print('.', end='')

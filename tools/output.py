@@ -19,6 +19,7 @@ def generate_images(model, test_input, tar,name):
 def generate_multi_images(model, dataset,N,name):
     generator = model.generator
     fig,ax = plt.subplots(N,3,figsize=(15,15*N/2.2))
+    plt.axis('off')
     for j, (Input, Target) in enumerate(dataset.take(N)):
         prediction = generator(Input, training=True)
         display_list = [Input[0], Target[0], prediction[0]]
