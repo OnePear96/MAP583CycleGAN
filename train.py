@@ -5,12 +5,12 @@ from models.LCycleGAN import LCycleGAN
 from models.Unet import Unet
 from tools.data_loader import load_image_s,load_image_u
 from tools.output import generate_multi_images
+from tools.args import create_parser
 import tensorflow as tf
 import time
 import os
 
-model_name = 'cyclegan'
-epoch = 50
+
 
 def get_trainer(model_name):
     if (model_name == 'gan'):
@@ -27,7 +27,7 @@ def get_trainer(model_name):
 
 
 
-def fit(train_ds, test_ds,epochs, restore = False):
+def fit(train_ds, test_ds,epochs,model_name, restore = False):
   Trainer, is_cycle = get_trainer(model_name)
   if restore:
     Trainer.checkpoint.restore(tf.train.latest_checkpoint(Trainer.checkpoint_dir))
@@ -58,7 +58,12 @@ def fit(train_ds, test_ds,epochs, restore = False):
 
 if __name__ == "__main__":
 
+    opts = create_parser()
+    model_name = opts.model
+    epoch = opts.epochs
+    restore = opts.load
+
     dataloader = load_image_s()
     train_dataset = dataloader.get_train_set()
     test_dataset = dataloader.get_test_set()
-    fit(train_dataset, test_dataset, epoch)
+    fit(train_dataset, test_dataset, epoch,model_name,restore)
