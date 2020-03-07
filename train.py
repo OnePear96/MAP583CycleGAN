@@ -9,7 +9,7 @@ import tensorflow as tf
 import time
 import os
 
-model_name = 'gan'
+model_name = 'unet'
 epoch = 50
 
 def get_trainer(model_name):
@@ -26,8 +26,10 @@ def get_trainer(model_name):
     return None
 
 
-def fit(train_ds, test_ds,epochs):
+def fit(train_ds, test_ds,epochs, restore = False):
   Trainer, is_cycle = get_trainer(model_name)
+  if restore:
+    Trainer.checkpoint.restore(tf.train.latest_checkpoint(Trainer.checkpoint_dir))
   for epoch in range(epochs):
     start = time.time()
 

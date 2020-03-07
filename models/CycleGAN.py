@@ -20,8 +20,8 @@ class CycleGAN():
       log_dir + "CycleGAN_fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 
-    checkpoint_dir = './CycleGAN_training_checkpoints'
-    self.checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
+    self.checkpoint_dir = './training_checkpoints'
+    self.checkpoint_prefix = os.path.join(self.checkpoint_dir, "CycleGAN_ckpt")
     self.checkpoint = tf.train.Checkpoint(generator_optimizer=self.generator_optimizer,
                                     discriminator_optimizer = self.discriminator_optimizer,
                                     generator_X2Y=self.generator_X2Y,
