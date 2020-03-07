@@ -68,8 +68,10 @@ class LCycleGAN():
             self.generator_optimizer.apply_gradients(zip(gen_gradients,gen_params))
             
             with self.summary_writer.as_default():
-                tf.summary.scalar('gen_total_loss',gen_total_loss, step = epoch)
                 tf.summary.scalar('disc_total_loss',D_loss, step=epoch)
+                tf.summary.scalar('gen_total_loss',gen_total_loss, step = epoch)
+                tf.summary.scalar('gen_recon_loss',reconstructed_X_loss+reconstructed_Y_loss, step=epoch)
+                tf.summary.scalar('gen_l_loss',l1_X_loss+l1_Y_loss, step=epoch)
 
 
 

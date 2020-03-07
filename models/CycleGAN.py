@@ -73,5 +73,6 @@ class CycleGAN():
       with self.summary_writer.as_default():
           tf.summary.scalar('gen_total_loss',gen_total_loss, step = epoch)
           tf.summary.scalar('disc_total_loss',D_loss, step=epoch)
+          tf.summary.scalar('gen_total_loss',l1_X_loss+l1_Y_loss, step = epoch)
 
 
