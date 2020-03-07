@@ -9,7 +9,7 @@ import tensorflow as tf
 import time
 import os
 
-model_name = 'unet'
+model_name = 'cyclegan'
 epoch = 50
 
 def get_trainer(model_name):
@@ -26,6 +26,7 @@ def get_trainer(model_name):
     return None
 
 
+
 def fit(train_ds, test_ds,epochs, restore = False):
   Trainer, is_cycle = get_trainer(model_name)
   if restore:
@@ -33,7 +34,7 @@ def fit(train_ds, test_ds,epochs, restore = False):
   for epoch in range(epochs):
     start = time.time()
 
-    generate_multi_images(Trainer, test_ds,6,epoch)
+    generate_multi_images(Trainer, test_ds,6,epoch,cycle = is_cycle)
     print("Epoch: ", epoch)
     # Train
     for n, (input_image, target) in enumerate(train_ds):
