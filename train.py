@@ -34,7 +34,7 @@ def fit(train_ds, test_ds,epochs):
     generate_multi_images(Trainer, test_ds,6,epoch)
 
     # Train
-    for n, (input_image, target) in train_ds.enumerate():
+    for n, (input_image, target) in enumerate(train_ds):
       print('.', end='')
       if (n+1) % 100 == 0:
         print()
