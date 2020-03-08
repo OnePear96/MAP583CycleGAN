@@ -2,10 +2,11 @@ import tensorflow as tf
 from basic_models.blocks import upsample,downsample
 
 OUTPUT_CHANNELS = 3
+INPUT_CHANNELS = 3
 
 
-def Generator():
-    inputs = tf.keras.layers.Input(shape=[256,256,3])
+def Generator(ic = INPUT_CHANNELS,oc = OUTPUT_CHANNELS):
+    inputs = tf.keras.layers.Input(shape=[256,256,ic])
 
     down_stack = [
         downsample(64, 4, apply_batchnorm=False), # (bs, 128, 128, 64)
@@ -29,7 +30,7 @@ def Generator():
     ]
 
     initializer = tf.random_normal_initializer(0., 0.02)
-    last = tf.keras.layers.Conv2DTranspose(OUTPUT_CHANNELS, 4,
+    last = tf.keras.layers.Conv2DTranspose(oc, 4,
                                             strides=2,
                                             padding='same',
                                             kernel_initializer=initializer,

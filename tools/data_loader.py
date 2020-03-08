@@ -5,7 +5,7 @@ BUFFER_SIZE = 400
 BATCH_SIZE = 1
 IMG_WIDTH = 256
 IMG_HEIGHT = 256
-PATH = 'data'
+#PATH = 'data'
 
 def resize(image, height, width):
     image = tf.image.resize(image, [height, width],
@@ -94,7 +94,7 @@ class load_image_s():
 
 
 class load_image_u():
-    def __init__(self,path = './data/MapAerialSup/', buffer = 400, batch = 1, name_X = 'A', name_Y = 'B'):
+    def __init__(self,path = './data/MapAerialSup/', buffer = 400, batch = 1, name_X = 'A', name_Y = 'B', inria = False):
         super().__init__()
         self.BUFFER_SIZE = buffer
         self.BATCH_SIZE = batch
@@ -103,10 +103,11 @@ class load_image_u():
         self.PATH = path
         self.name_X = name_X
         self.name_Y = name_Y
+        self.inria = inria
     
-    def load(self,image_file):
+    def load(self,image_file,c=3):
         image = tf.io.read_file(image_file)
-        image = tf.image.decode_png(image,channels=3)
+        image = tf.image.decode_jpeg(image,channels=c)
         image = tf.cast(image, tf.float32)
         return image
 
@@ -119,8 +120,8 @@ class load_image_u():
             input_image = tf.image.flip_left_right(input_image)
         return input_image
     
-    def load_image_train(self,image_file):
-        input_image = self.load(image_file)
+    def load_image_train(self,image_file,c=3):
+        input_image = self.load(image_file,c=c)
         input_image = self.random_jitter(input_image)
         input_image = normalize(input_image)
         return input_image
@@ -132,7 +133,7 @@ class load_image_u():
         return input_image
 
     def get_train_set(self):
-        path_train_X = PATH + 'train'+self.name_X
+        path_train_X = self.PATH + 'train'+self.name_X
         train_dataset_X = tf.data.Dataset.list_files(path_train_X+'/*.jpg')
         train_dataset_X = train_dataset_X.map(self.load_image_train,
                                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -140,9 +141,14 @@ class load_image_u():
         train_dataset_X = train_dataset_X.batch(self.BATCH_SIZE)
         self.train_dataset_X = train_dataset_X
 
-        path_train_Y = PATH + 'train'+self.name_Y
+        if self.inria :
+            c = 1
+        else:
+            c = 3
+
+        path_train_Y = self.PATH + 'train'+self.name_Y
         train_dataset_Y = tf.data.Dataset.list_files(path_train_Y+'/*.jpg')
-        train_dataset_Y = train_dataset_Y.map(self.load_image_train,
+        train_dataset_Y = train_dataset_Y.map(lambda x: self.load_image_train(x,c=c),
                                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
         train_dataset_Y = train_dataset_Y.shuffle(self.BUFFER_SIZE)
         train_dataset_Y = train_dataset_Y.batch(self.BATCH_SIZE)
@@ -151,16 +157,34 @@ class load_image_u():
         return train_dataset_X, train_dataset_Y
 
     def get_test_set(self):
-        path_test_X = PATH + 'test' + self.name_X
+        path_test_X = self.PATH + 'test' + self.name_X
         test_dataset_X = tf.data.Dataset.list_files(path_test_X+'/*.jpg')
         test_dataset_X = test_dataset_X.map(self.load_image_test)
         test_dataset_X = test_dataset_X.batch(self.BATCH_SIZE)
         self.test_dataset_X = test_dataset_X
 
-        path_test_Y = PATH + 'test' + self.name_Y
+        if self.inria:
+            return test_dataset_X
+
+        path_test_Y = self.PATH + 'test' + self.name_Y
         test_dataset_Y = tf.data.Dataset.list_files(path_test_Y+'/*.jpg')
         test_dataset_Y = test_dataset_Y.map(self.load_image_test)
         test_dataset_Y = test_dataset_Y.batch(self.BATCH_SIZE)
         self.test_dataset_Y = test_dataset_Y
 
         return test_dataset_X,test_dataset_Y
+
+
+
+if __name__ == '__main__':
+    ds = load_image_u(path = './data/Inria/', inria = True)
+    from matplotlib import pyplot as plt
+    fig,ax = plt.subplots(1,2,figsize=(15,15))
+    X,Y = ds.get_train_set()
+    X_test = ds.get_test_set()
+    for y in Y.take(1):
+        print(y.shape)
+    for (x,y) in zip(X.take(1),Y.take(1)):
+        ax[0].imshow(x[0] * 0.5 + 0.5)
+        ax[1].imshow(y[0,:,:,0] * 0.5 + 0.5)
+    plt.show()

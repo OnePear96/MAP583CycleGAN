@@ -2,11 +2,11 @@ import tensorflow as tf
 from basic_models.blocks import downsample
 
 
-def Discriminator():
+def Discriminator(c = 3):
     initializer = tf.random_normal_initializer(0., 0.02)
 
-    inp = tf.keras.layers.Input(shape=[256, 256, 3], name='input_image')
-    tar = tf.keras.layers.Input(shape=[256, 256, 3], name='target_image')
+    inp = tf.keras.layers.Input(shape=[256, 256, c], name='input_image')
+    tar = tf.keras.layers.Input(shape=[256, 256, c], name='target_image')
 
     x = tf.keras.layers.concatenate([inp, tar]) # (bs, 256, 256, channels*2)
 
@@ -31,10 +31,10 @@ def Discriminator():
     return tf.keras.Model(inputs=[inp, tar], outputs=last)
 
 
-def simple_Discriminator():
+def simple_Discriminator(c = 3):
     initializer = tf.random_normal_initializer(0., 0.02)
 
-    tar = tf.keras.layers.Input(shape=[256, 256, 3], name='target_image')
+    tar = tf.keras.layers.Input(shape=[256, 256, c], name='target_image')
 
     down1 = downsample(64, 4, False)(tar) # (bs, 128, 128, 64)
     down2 = downsample(128, 4)(down1) # (bs, 64, 64, 128)

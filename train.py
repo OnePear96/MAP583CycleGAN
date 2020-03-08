@@ -23,26 +23,41 @@ def get_trainer(model_name):
         return CycleGAN(), True
     if (model_name == 'lcyclegan'):
         return LCycleGAN(), True
+    if (model_name == 'cyclegan_inria'):
+        return CycleGAN(cX=3,cY=1), True
     return None
 
 
 
-def fit(train_ds, test_ds,epochs,model_name, restore = False):
+def fit(train_ds, test_ds,epochs,model_name, restore = False, Supervised = True, train_dsB = None, test_dsB = None):
   Trainer, is_cycle = get_trainer(model_name)
   if restore:
     Trainer.checkpoint.restore(tf.train.latest_checkpoint(Trainer.checkpoint_dir))
   for epoch in range(epochs):
     start = time.time()
 
-    generate_multi_images(Trainer, test_ds,6,epoch,cycle = is_cycle)
-    print("Epoch: ", epoch)
-    # Train
-    for n, (input_image, target) in enumerate(train_ds):
-      print('.', end='')
-      if (n+1) % 100 == 0:
-        print()
-      Trainer.train_step(input_image, target, epoch)
-    print()
+    if not Supervised:
+      generate_multi_images(Trainer, test_ds,6,epoch,cycle = is_cycle, Supervised = False, datasetB = test_dsB)
+      print("Epoch: ", epoch)
+      # Train
+      n=0
+      for (X,Y) in zip(train_ds,train_dsB):
+        print('.', end='')
+        if (n+1)%100 == 0:
+          print()
+        n +=1
+        Trainer.train_step(X,Y,epoch)
+      
+    else:
+      generate_multi_images(Trainer, test_ds,6,epoch,cycle = is_cycle)
+      print("Epoch: ", epoch)
+      # Train
+      for n, (input_image, target) in enumerate(train_ds):
+        print('.', end='')
+        if (n+1) % 100 == 0:
+          print()
+        Trainer.train_step(input_image, target, epoch)
+      print()
 
     if not os.path.exists(Trainer.checkpoint_prefix):
       os.makedirs(Trainer.checkpoint_prefix)
@@ -63,7 +78,14 @@ if __name__ == "__main__":
     epoch = opts.epochs
     restore = opts.load
 
-    dataloader = load_image_s()
-    train_dataset = dataloader.get_train_set()
-    test_dataset = dataloader.get_test_set()
-    fit(train_dataset, test_dataset, epoch,model_name,restore)
+    if opts.dataset == 'inria':
+      dataloader = load_image_u(path = './data/Inria/', inria = True,name_X = 'A', name_Y = 'B')
+      train_dataset_X,train_dataset_Y = dataloader.get_train_set()
+      test_dataset_X = dataloader.get_test_set()
+      model_name = 'cyclegan_inria'
+      fit(train_dataset_X, test_dataset_X, epoch,model_name,restore,Supervised=False, train_dsB = train_dataset_Y)
+    else:
+      dataloader = load_image_s()
+      train_dataset = dataloader.get_train_set()
+      test_dataset = dataloader.get_test_set()
+      fit(train_dataset, test_dataset, epoch,model_name,restore)

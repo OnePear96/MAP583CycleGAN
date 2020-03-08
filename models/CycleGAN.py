@@ -6,11 +6,11 @@ from basic_models.discriminator import simple_Discriminator as Discriminator
 import os
 
 class CycleGAN():
-  def __init__(self):
-    self.generator_X2Y = Generator()
-    self.generator_Y2X = Generator()
-    self.discriminator_X = Discriminator()
-    self.discriminator_Y = Discriminator()
+  def __init__(self, cX = 3, cY = 3):
+    self.generator_X2Y = Generator(ic = cX, oc = cY)
+    self.generator_Y2X = Generator(ic = cY, oc = cX)
+    self.discriminator_X = Discriminator(c = cX)
+    self.discriminator_Y = Discriminator(c = cY)
 
     self.generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
     self.discriminator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
