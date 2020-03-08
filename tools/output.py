@@ -67,6 +67,7 @@ def generate_multi_images(model, dataset,N,name,cycle = False,datasetB=None, Sup
                     display_list = [Input[0], Target[0], pred_X[0], pred_Y[0]]
                     title = ['X', 'Y', 'Predicted X', 'Predicted Y']
                     for i in range(4):
+                        ax[j][i].axis('off')
                         ax[j][i].set_title(title[i])
                         ax[j][i].imshow(display_list[i] * 0.5 + 0.5)
                     j += 1
@@ -83,6 +84,7 @@ def generate_multi_images(model, dataset,N,name,cycle = False,datasetB=None, Sup
                 display_list = [Input[0], pred[0]]
                 title = ['X', 'Predicted Y']
                 for i in range(2):
+                    ax[j][i].axis('off')
                     ax[j][i].set_title(title[i])
                     ax[j][i].imshow(display_list[i] * 0.5 + 0.5)
             if not os.path.exists(path):
@@ -101,6 +103,7 @@ def generate_multi_images(model, dataset,N,name,cycle = False,datasetB=None, Sup
             display_list = [Input[0], Target[0], pred_X[0], pred_Y[0]]
             title = ['X', 'Y', 'Predicted X', 'Predicted Y']
             for i in range(4):
+                ax[j][i].axis('off')
                 ax[j][i].set_title(title[i])
                 ax[j][i].imshow(display_list[i] * 0.5 + 0.5)
         if not os.path.exists(path):
@@ -117,6 +120,7 @@ def generate_multi_images(model, dataset,N,name,cycle = False,datasetB=None, Sup
             display_list = [Input[0], Target[0], prediction[0]]
             title = ['Input Image', 'Ground Truth', 'Predicted Image']
             for i in range(3):
+                ax[j][i].axis('off')
                 ax[j][i].set_title(title[i])
                 ax[j][i].imshow(display_list[i] * 0.5 + 0.5)
     #    print(str(model))
