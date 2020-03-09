@@ -1,9 +1,30 @@
-# MAP583CycleGAN
+# Pix2pix for Aerial-Map dataset
 
-A project using cycleGAN for pix2pix work
+Implementation of pix2pix methods to pass Aerial images to maps, the algorithms that we implemented are:
 
-## TODO List
-1. 刘文俊：模块化调用数据板块
-2. 莫也兰：模块化model板块
-3. 赵天远：模块化loss，training，output和analyse板块
-4. 周慧慧，卜宇成：分析结果
+* Unet [supervised]
+* GAN [unsupervised]
+* L-GAN [supervised]
+* CycleGAN [supervised]
+* L-CycleGAN [unsupervised]
+
+## Setup
+To install all required dependencies run:
+```bash
+pip install -r requirements.txt
+```
+
+## Running
+To start training and get output with:
+```bash
+python train.py -m=<model> -e=<epochs> -d=<dataset>
+```
+Possible values for parameter `model` are: `unet`,`gan`,`lgan`,`cyclegan`,and `lcyclegan`.
+
+Possible values for parameter `d` are: `a2m` and `inria`
+
+`epochs` is the number of epoches that you want to run
+
+All the output images are saved in the `/output` directory
+
+You can use tensorboard in the `/logs` directory to visualize the loss 
