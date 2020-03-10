@@ -5,8 +5,8 @@ Implementation of pix2pix methods to pass Aerial images to maps, the algorithms 
 * Unet [supervised]
 * GAN [unsupervised]
 * L-GAN [supervised]
-* CycleGAN [supervised]
-* L-CycleGAN [unsupervised]
+* CycleGAN [unsupervised]
+* L-CycleGAN [supervised]
 
 ## Setup
 To install all required dependencies run:
